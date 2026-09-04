@@ -34,12 +34,55 @@ export const procedures: Procedure[] = [{
   ],
 }];
 
-export const gallery = [
-  { src: "/images/resultado-01.jpg", alt: "Resultado real de extensão de cílios Volume Brasileiro", category: "Volume Brasileiro" },
-  { src: "/images/andreissa-atendimento.jpg", alt: "Andreissa realizando um atendimento de extensão de cílios", category: "Bastidores" },
-  { src: "/images/resultado-02.jpg", alt: "Detalhe de resultado natural em extensão de cílios", category: "Volume Brasileiro" },
-  { src: "/images/andreissa-certificado.jpg", alt: "Andreissa em momento de formação profissional", category: "Bastidores" },
-  { src: "/images/resultado-03.jpg", alt: "Resultado real de cílios com definição e leveza", category: "Volume Brasileiro" },
+export type GalleryImage = {
+  src: string;
+  alt: string;
+  title: string;
+  category: "Volume Brasileiro" | "Resultado real";
+  width: number;
+  height: number;
+  objectPosition: string;
+  featured?: boolean;
+};
+
+export const gallery: GalleryImage[] = [
+  {
+    src: "/images/results/resultado-real-olhar-01.jpg",
+    alt: "Resultado real de extensão de cílios realizado por Andreissa Lash Designer",
+    title: "Resultado real",
+    category: "Resultado real",
+    width: 1065,
+    height: 1420,
+    objectPosition: "50% 42%",
+    featured: true,
+  },
+  {
+    src: "/images/results/resultado-real-olhar-02.jpg",
+    alt: "Detalhe do olho completo com extensão de cílios realizada por Andreissa Lash Designer",
+    title: "Resultado real",
+    category: "Resultado real",
+    width: 1440,
+    height: 1920,
+    objectPosition: "50% 50%",
+  },
+  {
+    src: "/images/results/volume-brasileiro-01.jpg",
+    alt: "Resultado de extensão de cílios Volume Brasileiro realizado por Andreissa Lash Designer",
+    title: "Volume Brasileiro",
+    category: "Volume Brasileiro",
+    width: 1218,
+    height: 1600,
+    objectPosition: "50% 48%",
+  },
+  {
+    src: "/images/results/volume-brasileiro-03.jpg",
+    alt: "Resultado natural de extensão de cílios realizado por Andreissa Lash Designer",
+    title: "Volume Brasileiro",
+    category: "Volume Brasileiro",
+    width: 1361,
+    height: 2420,
+    objectPosition: "50% 50%",
+  },
 ];
 
 export function whatsappUrl(message: string) {

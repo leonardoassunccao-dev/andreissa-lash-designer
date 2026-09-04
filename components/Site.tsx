@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { contact, gallery, procedures, type Procedure, whatsappUrl } from "@/data/site";
 
 const booking = whatsappUrl("Olá, Andreissa! Vi seu site e gostaria de consultar horários disponíveis para extensão de cílios.");
@@ -36,8 +36,23 @@ function ProcedureModal({ procedure, onClose }: { procedure: Procedure | null; o
 
 function Gallery() {
   const [active, setActive] = useState<number | null>(null);
-  useEffect(() => { const esc = (e: KeyboardEvent) => e.key === "Escape" && setActive(null); document.addEventListener("keydown", esc); return () => document.removeEventListener("keydown", esc); }, []);
-  return <section className="gallery section" id="resultados"><div className="section-head invert" data-reveal><div><p className="eyebrow">Portfólio</p><h2>Resultados <em>reais</em></h2></div><p>Trabalhos e momentos reais da trajetória da Andreissa, preservados sem filtros que alterem o resultado.</p></div><div className="gallery-grid">{gallery.map((item, i) => <button key={item.src} className={`gallery-item g${i+1}`} onClick={() => setActive(i)} data-reveal><Image src={item.src} alt={item.alt} fill sizes="(max-width: 760px) 100vw, 50vw"/><span>Ver imagem <Arrow /></span></button>)}</div>{active !== null && <div className="lightbox" role="dialog" aria-modal="true" aria-label="Visualização da galeria" onClick={() => setActive(null)}><button onClick={() => setActive(null)} aria-label="Fechar imagem">×</button><Image src={gallery[active].src} alt={gallery[active].alt} fill sizes="100vw"/></div>}</section>;
+  const touchStart = useRef<number | null>(null);
+  const previous = useCallback(() => setActive(value => value === null ? null : (value - 1 + gallery.length) % gallery.length), []);
+  const next = useCallback(() => setActive(value => value === null ? null : (value + 1) % gallery.length), []);
+  useEffect(() => {
+    if (active === null) return;
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActive(null);
+      if (event.key === "ArrowLeft") previous();
+      if (event.key === "ArrowRight") next();
+    };
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", keydown);
+    return () => { document.body.style.overflow = ""; document.removeEventListener("keydown", keydown); };
+  }, [active, next, previous]);
+  // The touch handler uses a compact conditional only to choose swipe direction.
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  return <section className="gallery section portfolio" id="resultados"><div className="portfolio-inner"><div className="portfolio-head" data-reveal><div><p className="eyebrow">Portfólio · Resultados reais</p><h2>Olhares que falam <em>por si.</em></h2></div><p>Cada olhar tem uma identidade. Conheça alguns trabalhos realizados pela Andreissa.</p></div><div className="portfolio-grid">{gallery.map((item, i) => <button key={item.src} className={`portfolio-card${item.featured ? " featured" : ""}`} onClick={() => setActive(i)} data-reveal aria-label={`Ampliar ${item.title.toLowerCase()}`}><span className="portfolio-photo"><Image src={item.src} alt={item.alt} width={item.width} height={item.height} sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1100px) 45vw, 30vw" quality={92} style={{ objectPosition: item.objectPosition }}/></span><span className="portfolio-caption"><span>{item.title}</span><span>0{i + 1} <Arrow /></span></span></button>)}</div></div>{active !== null && <div className="portfolio-lightbox" role="dialog" aria-modal="true" aria-label={`${gallery[active].title} - imagem ${active + 1} de ${gallery.length}`} onClick={() => setActive(null)} onTouchStart={event => { touchStart.current = event.changedTouches[0].clientX; }} onTouchEnd={event => { if (touchStart.current === null) return; const distance = event.changedTouches[0].clientX - touchStart.current; if (Math.abs(distance) > 50) distance > 0 ? previous() : next(); touchStart.current = null; }}><button className="lightbox-close" onClick={() => setActive(null)} aria-label="Fechar imagem">×</button><button className="lightbox-nav previous" onClick={event => { event.stopPropagation(); previous(); }} aria-label="Imagem anterior">←</button><figure onClick={event => event.stopPropagation()}><Image src={gallery[active].src} alt={gallery[active].alt} width={gallery[active].width} height={gallery[active].height} sizes="95vw" quality={95} priority/><figcaption><span>{gallery[active].title}</span><span>{String(active + 1).padStart(2, "0")} / {String(gallery.length).padStart(2, "0")}</span></figcaption></figure><button className="lightbox-nav next" onClick={event => { event.stopPropagation(); next(); }} aria-label="Próxima imagem">→</button></div>}</section>;
 }
 
 function Quiz() {

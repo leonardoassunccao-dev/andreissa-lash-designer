@@ -1,0 +1,244 @@
+.portfolio {
+  padding-left: max(4vw, 24px);
+  padding-right: max(4vw, 24px);
+}
+
+.portfolio-inner {
+  width: min(100%, 1360px);
+  margin: 0 auto;
+}
+
+.portfolio-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  align-items: flex-end;
+  gap: 7vw;
+  margin-bottom: 70px;
+}
+
+.portfolio-head h2 {
+  max-width: 900px;
+  font-size: clamp(56px, 7vw, 108px);
+  line-height: 0.9;
+}
+
+.portfolio-head h2 em {
+  display: block;
+  color: #cdb38d;
+}
+
+.portfolio-head > p {
+  max-width: 390px;
+  margin-bottom: 8px;
+  color: #aaa49b;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(14px, 1.7vw, 26px);
+}
+
+.portfolio-card {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: white;
+  text-align: left;
+  cursor: zoom-in;
+}
+
+.portfolio-card:nth-child(even) {
+  margin-top: 58px;
+}
+
+.portfolio-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #181816;
+}
+
+.portfolio-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 300ms ease;
+}
+
+.portfolio-card:hover .portfolio-photo img {
+  transform: scale(1.012);
+}
+
+.portfolio-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 2px 0;
+  color: #c9c3b9;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 9px;
+}
+
+.portfolio-caption > span:last-child {
+  color: #857f75;
+  white-space: nowrap;
+}
+
+.portfolio-lightbox {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) 88px;
+  align-items: center;
+  background: rgba(5, 5, 5, 0.98);
+  color: white;
+  animation: portfolio-fade 220ms ease;
+}
+
+.portfolio-lightbox figure {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  margin: 0;
+  padding: 28px 0 20px;
+}
+
+.portfolio-lightbox figure img {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 82px);
+  object-fit: contain;
+}
+
+.portfolio-lightbox figcaption {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  color: #aaa49b;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 9px;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  border: 0;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.lightbox-close {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: 22px;
+  width: 48px;
+  height: 48px;
+  font-size: 40px;
+  font-weight: 200;
+}
+
+.lightbox-nav {
+  width: 56px;
+  height: 56px;
+  margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  font-size: 20px;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.lightbox-nav:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@keyframes portfolio-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 1100px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-card:nth-child(even) {
+    margin-top: 42px;
+  }
+}
+
+@media (max-width: 760px) {
+  .portfolio-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 46px;
+  }
+
+  .portfolio-head h2 {
+    font-size: clamp(51px, 15vw, 72px);
+  }
+
+  .portfolio-head > p {
+    max-width: 330px;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .portfolio-card:nth-child(even) {
+    margin-top: 0;
+  }
+
+  .portfolio-photo {
+    width: min(100%, 520px);
+    margin: 0 auto;
+  }
+
+  .portfolio-lightbox {
+    display: block;
+    padding: 58px 14px 18px;
+  }
+
+  .portfolio-lightbox figure {
+    height: 100%;
+    padding: 0;
+  }
+
+  .portfolio-lightbox figure img {
+    height: calc(100svh - 112px);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .lightbox-nav.previous { left: 12px; }
+  .lightbox-nav.next { right: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-photo img,
+  .portfolio-lightbox {
+    animation: none;
+    transition: none;
+  }
+}
